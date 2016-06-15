@@ -108,8 +108,9 @@ export function unlisten(listener: Listener): void {
   ls.off(CLIPBOARD_KEY, listener);
 }
 
-export function onCopy(method: string, listenOnLocalChanges = false): any {
+export function onCopy(method: string, prop: string, listenOnLocalChanges = false): any {
   return {
+    propInjector: setProp => setProp(prop, ls.get(CLIPBOARD_KEY)),
     componentDidMountHook: (props, context, state, child) => {
       if (!child) {
         throw new Error('onCopy must be used on a class component.');

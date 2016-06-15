@@ -1,8 +1,9 @@
 {
   "name": "local-clipboard",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "On-site Clipboard using local storage API",
   "main": "lib/main.js",
+  "typings": "lib/main.d.ts",
   "files": [
     "lib",
     "typings.json"

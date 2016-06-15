@@ -1,0 +1,42 @@
+{
+  "name": "local-clipboard",
+  "version": "0.0.1",
+  "description": "On-site Clipboard using local storage API",
+  "main": "lib/main.js",
+  "files": [
+    "lib",
+    "typings.json"
+  ],
+  "scripts": {
+    "build": "tsc -d typings/index.d.ts src/main.ts --rootDir src --outDir lib --target es5 --module commonjs --removeComments",
+    "prepublish": "typings install && npm run build",
+    "ci-test": "npm run test",
+    "pretest": "tsc",
+    "test": "mocha src/**/*.spec.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alitaheri/local-clipboard.git"
+  },
+  "keywords": [
+    "pretur",
+    "mda",
+    "model",
+    "spec"
+  ],
+  "author": "Ali Taheri Moghaddar",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alitaheri/local-clipboard/issues"
+  },
+  "homepage": "https://github.com/alitaheri/local-clipboard#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5",
+    "typescript": "^1.8.10",
+    "typings": "^1.1.0"
+  },
+  "dependencies": {
+    "local-storage": "^1.4.2"
+  }
+}

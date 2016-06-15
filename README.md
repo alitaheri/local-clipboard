@@ -1,4 +1,4 @@
-# [Pretur Spec](https://github.com/alitaheri/local-clipboard)
+# [Local Clipboard](https://github.com/alitaheri/local-clipboard)
 [![npm](https://badge.fury.io/js/local-clipboard.svg)](https://badge.fury.io/js/local-clipboard)
 [![Build Status](https://travis-ci.org/alitaheri/local-clipboard.svg?branch=master)](https://travis-ci.org/alitaheri/local-clipboard)
 

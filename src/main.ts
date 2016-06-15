@@ -57,10 +57,11 @@ export function copy(data: any, options?: ClipboardOptions): void {
     const old = ls.get(CLIPBOARD_KEY);
     const url = (window && window.location && window.location.href) || null;
 
+    ls.set(CLIPBOARD_KEY, payload);
     localListeners.forEach(l => l(payload, old, url));
+  } else {
+    ls.set(CLIPBOARD_KEY, payload);
   }
-
-  ls.set(CLIPBOARD_KEY, payload);
 }
 
 export function hasData(): boolean {
@@ -108,9 +109,8 @@ export function unlisten(listener: Listener): void {
   ls.off(CLIPBOARD_KEY, listener);
 }
 
-export function onCopy(method: string, prop: string, listenOnLocalChanges = false): any {
+export function onCopy(method: string, listenOnLocalChanges = false): any {
   return {
-    propInjector: setProp => setProp(prop, ls.get(CLIPBOARD_KEY)),
     componentDidMountHook: (props, context, state, child) => {
       if (!child) {
         throw new Error('onCopy must be used on a class component.');
@@ -126,6 +126,37 @@ export function onCopy(method: string, prop: string, listenOnLocalChanges = fals
       if (listenOnLocalChanges) {
         function localCopyListener(v, o, u) {
           child[method](v, o, u);
+        }
+
+        state.localListener = localCopyListener;
+        addLocalListener(localCopyListener);
+      }
+    },
+    componentWillUnmountHook: (props, context, state) => {
+      unlisten(state.listener);
+
+      if (listenOnLocalChanges) {
+        removeLocalListener(state.localListener);
+      }
+    },
+  };
+}
+
+export function forwardClipboard(prop: string, listenOnLocalChanges = false): any {
+  return {
+    initialStateInjector: (p, c, state, forceUpdater) => state.update = forceUpdater,
+    propInjector: setProp => setProp(prop, ls.get(CLIPBOARD_KEY)),
+    componentDidMountHook: (props, context, state) => {
+      function copyListener() {
+        state.update();
+      }
+
+      state.listener = copyListener;
+      listen(copyListener);
+
+      if (listenOnLocalChanges) {
+        function localCopyListener() {
+          state.update();
         }
 
         state.localListener = localCopyListener;
